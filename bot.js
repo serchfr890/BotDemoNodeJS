@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-const { ActivityHandler, CardFactory } = require('botbuilder');
+const { ActivityHandler, CardFactory, MessageFactory } = require('botbuilder');
 const WelcomeUserMessage = require('./Resources/WelcomeUser.json');
 const { QnAMaker } = require('botbuilder-ai');
 
@@ -27,6 +27,8 @@ class EchoBot extends ActivityHandler {
                 await context.sendActivity('Lo siento, aun no tengo el conocimiento suficiente para responder tu pregunta');
             }
 
+            await context.sendActivity(this.sendSuggestionMessages());
+
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
@@ -38,11 +40,16 @@ class EchoBot extends ActivityHandler {
                     await context.sendActivity({
                         attachments: [CardFactory.adaptiveCard(WelcomeUserMessage)]
                     });
+                    await context.sendActivity(this.sendSuggestionMessages());
                 }
             }
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
+    }
+
+    sendSuggestionMessages() {
+        return MessageFactory.suggestedActions(['¿Cómo encuentro mi clave de producto de windows?', 'He descargado un archivo ISO, ¿ahora qué?'], 'Para continuar escribe una pregunta o elije una.');
     }
 }
 
