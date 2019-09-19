@@ -1,0 +1,32 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Image",
+            "altText": "",
+            "url": "https://media.sproutsocial.com/uploads/2018/03/The-Complete-Guide-to-Chatbots-b605987a-a012-4ed4-a490-14ad11f88ac5.png",
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Hola al mundo de los bots.",
+            "horizontalAlignment": "Center",
+            "wrap": true,
+            "size": "Medium",
+            "weight": "Bolder",
+            "color": "Accent"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Yo puedo ayudarte a contestar preguntas",
+            "spacing": "Medium",
+            "horizontalAlignment": "Center",
+            "wrap": true,
+            "fontType": "Monospace",
+            "size": "Small",
+            "weight": "Bolder"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
