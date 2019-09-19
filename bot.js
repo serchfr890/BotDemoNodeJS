@@ -3,13 +3,29 @@
 
 const { ActivityHandler, CardFactory } = require('botbuilder');
 const WelcomeUserMessage = require('./Resources/WelcomeUser.json');
+const { QnAMaker } = require('botbuilder-ai');
 
 class EchoBot extends ActivityHandler {
     constructor() {
         super();
+        try {
+            this.qnaMaker = new QnAMaker({
+                knowledgeBaseId: process.env.QnAKnowledgebaseId,
+                endpointKey: process.env.QnAAuthKey,
+                host: process.env.QnAEndpointHostName
+            });
+        } catch (err) {
+            console.warn('No se pudo realizar la configuración de QnA Maker de manera correcta, por favor de verificar el archivo .env');
+        }
+
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
-            await context.sendActivity(`Dijste esto ---->   '${ context.activity.text }'`);
+            const qnaResults = await this.qnaMaker.getAnswers(context);
+            if (qnaResults[0]) {
+                await context.sendActivity(qnaResults[0].answer);
+            } else {
+                await context.sendActivity('Lo siento, aun no tengo el conocimiento suficiente para responder tu pregunta');
+            }
 
             // By calling next() you ensure that the next BotHandler is run.
             await next();
